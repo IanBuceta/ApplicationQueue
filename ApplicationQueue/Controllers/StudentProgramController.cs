@@ -14,13 +14,13 @@ namespace ApplicationQueue.Controllers
         // GET: StudentProgram
         public ActionResult Index()
         {
-            return View();
+            return View(studentPrograms);
         }
 
         // GET: StudentProgram/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            return View(studentPrograms);
         }
 
         // GET: StudentProgram/Create
@@ -32,49 +32,49 @@ namespace ApplicationQueue.Controllers
         // POST: StudentProgram/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(int id, string teamName)
+        public ActionResult Create(uint id, string teamName, string src)
         {
             try
             {
                 // TODO: Add insert logic here
-                studentPrograms.Enqueue(new StudentProgram(id, teamName));
+                studentPrograms.Enqueue(new StudentProgram(id, teamName, src));
                 return RedirectToAction(nameof(Index));
             }
             catch
             {
-                return View();
+                return View(studentPrograms);
             }
         }
 
         // GET: StudentProgram/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            return View(studentPrograms.ToList().Find(sP => sP.Id == id));
         }
 
         // POST: StudentProgram/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, string newteamName, string newSrc)
+        public ActionResult Edit(int id, string teamName, string Src)
         {
             try
             {
                 // TODO: Add update logic here
                 var student = studentPrograms.ToList().Find(s => s.Id == id);
-                student.TeamName = newteamName;
-                student.Src = newSrc;
+                student.TeamName = teamName;
+                student.Src = Src;
                 return RedirectToAction(nameof(Index));
             }
             catch
             {
-                return View();
+                return View(studentPrograms);
             }
         }
 
         // GET: StudentProgram/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            return View(studentPrograms.ToList().Find(sP => sP.Id == id));
         }
 
         // POST: StudentProgram/Delete/5
@@ -90,7 +90,7 @@ namespace ApplicationQueue.Controllers
             }
             catch
             {
-                return View();
+                return View(studentPrograms);
             }
         }
     }
