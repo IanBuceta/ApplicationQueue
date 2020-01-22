@@ -11,6 +11,10 @@ namespace ApplicationQueue.Controllers
     public class StudentProgramController : Controller
     {
         static Queue<StudentProgram> studentPrograms = new Queue<StudentProgram>();
+        private StudentProgram GetStudentProgram(int id)
+        {
+            return studentPrograms.ToList().Find(sP => sP.Id == id);
+        }
         // GET: StudentProgram
         public ActionResult Index()
         {
@@ -20,7 +24,7 @@ namespace ApplicationQueue.Controllers
         // GET: StudentProgram/Details/5
         public ActionResult Details(int id)
         {
-            return View(studentPrograms);
+            return View(GetStudentProgram(id));
         }
 
         // GET: StudentProgram/Create
@@ -49,7 +53,7 @@ namespace ApplicationQueue.Controllers
         // GET: StudentProgram/Edit/5
         public ActionResult Edit(int id)
         {
-            return View(studentPrograms.ToList().Find(sP => sP.Id == id));
+            return View(GetStudentProgram(id));
         }
 
         // POST: StudentProgram/Edit/5
@@ -74,7 +78,7 @@ namespace ApplicationQueue.Controllers
         // GET: StudentProgram/Delete/5
         public ActionResult Delete(int id)
         {
-            return View(studentPrograms.ToList().Find(sP => sP.Id == id));
+            return View(GetStudentProgram(id));
         }
 
         // POST: StudentProgram/Delete/5
