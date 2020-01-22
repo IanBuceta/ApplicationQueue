@@ -10,7 +10,7 @@ namespace ApplicationQueue.Controllers
 {
     public class StudentProgramController : Controller
     {
-        static Queue<StudentProgram> studentPrograms = new Queue<StudentProgram>();
+        readonly static Queue<StudentProgram> studentPrograms = new Queue<StudentProgram>();
         private StudentProgram GetStudentProgram(int id)
         {
             return studentPrograms.ToList().Find(sP => sP.Id == id);
