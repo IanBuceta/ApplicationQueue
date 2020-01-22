@@ -40,7 +40,6 @@ namespace ApplicationQueue.Controllers
         {
             try
             {
-                // TODO: Add insert logic here
                 studentPrograms.Enqueue(new StudentProgram(id, teamName, src));
                 return RedirectToAction(nameof(Index));
             }
@@ -63,7 +62,6 @@ namespace ApplicationQueue.Controllers
         {
             try
             {
-                // TODO: Add update logic here
                 var student = studentPrograms.ToList().Find(s => s.Id == id);
                 student.TeamName = teamName;
                 student.Src = Src;
@@ -88,7 +86,6 @@ namespace ApplicationQueue.Controllers
         {
             try
             {
-                // TODO: Add delete logic here
                 studentPrograms.Dequeue();
                 return RedirectToAction(nameof(Index));
             }
