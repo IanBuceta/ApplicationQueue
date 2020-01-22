@@ -17,7 +17,8 @@ namespace ApplicationQueue.Models
         public uint Id { get; }
         public string TeamName { get; set; }
         public string Src { get; set; }
-        public bool IsRunning {
+        public bool IsRunning 
+        {
             get
             {
                 return CheckIfRunning();
