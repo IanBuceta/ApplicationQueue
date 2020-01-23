@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace ApplicationQueue.Models
 {
@@ -27,7 +28,18 @@ namespace ApplicationQueue.Models
 
         private bool CheckIfRunning()
         {
-            return false;
+            // TODO: Add real remote system name 
+            string remoteSystem = Environment.MachineName; 
+            Process[] proc = Process.GetProcessesByName(this.Src, remoteSystem);
+
+            if (proc.Length > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }
