@@ -8,6 +8,11 @@ namespace ApplicationQueue.Models
 {
     public class StudentProgram
     {
+        public StudentProgram()
+        {
+
+        }
+
         public StudentProgram(uint id, string teamName, string src)
         {
             this.Id = id;
@@ -15,7 +20,7 @@ namespace ApplicationQueue.Models
             this.Src = src;
         }
 
-        public uint Id { get; }
+        public uint Id { get; set; }
         public string TeamName { get; set; }
         public string Src { get; set; }
         public bool IsRunning 
