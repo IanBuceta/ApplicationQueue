@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ApplicationQueue;
 using ApplicationQueue.Models;
+using System.Diagnostics;
 
 namespace AplicationQueueAPI.Controllers
 {
@@ -33,7 +34,7 @@ namespace AplicationQueueAPI.Controllers
 
         // GET: api/StudentProgram/5
         [HttpGet("{id}", Name = "Get")]
-        public ActionResult<StudentProgram> Get(int id)
+        public ActionResult<StudentProgram> Get(uint id)
         {
             return GetStudentProgram(id);
         }
@@ -47,7 +48,7 @@ namespace AplicationQueueAPI.Controllers
 
         // PUT: api/StudentProgram/5
         [HttpPatch("{id}")]
-        public void Patch(int id, [FromBody] StudentProgram studentProgram)
+        public void Patch(uint id, [FromBody] StudentProgram studentProgram)
         {
             var toModify = GetStudentProgram(id);
             toModify.TeamName = studentProgram.TeamName;
@@ -56,13 +57,31 @@ namespace AplicationQueueAPI.Controllers
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete()]
-        public void Delete(int id)
+        public ActionResult<StudentProgram> Delete(uint id)
         {
-            studentPrograms.Dequeue();
+            return studentPrograms.Dequeue();
         }
-        public StudentProgram GetStudentProgram(int id)
+        public StudentProgram GetStudentProgram(uint id)
         {
             return studentPrograms.ToList().Find(s => s.Id == id);
         }
+
+        [HttpPost("Select")]
+        public ActionResult<StudentProgram> selectTopProgram()
+        {
+            StudentProgram studentProgram = studentPrograms.First();
+            var strCmdText = $"trash.txt {studentProgram.Id} {studentProgram.TeamName} {studentProgram.Src}";
+            var process = Process.Start(@"C:\Users\Ian\source\repos\Async String\Async String\bin\Debug\netcoreapp3.1\Async String.exe", strCmdText);
+            process.WaitForExit();
+            return Delete(studentProgram.Id);
+        }
+        //public static void CheckIfRunning
+        //{
+        //    get
+        //    {
+
+        //    }
+
+        //}
     }
 }
