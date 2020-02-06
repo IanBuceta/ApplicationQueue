@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using ApplicationQueue;
 using ApplicationQueue.Models;
 using System.Diagnostics;
+using System.Threading;
 
 namespace AplicationQueueAPI.Controllers
 {
@@ -27,7 +28,7 @@ namespace AplicationQueueAPI.Controllers
 
         // GET: api/StudentProgram
         [HttpGet]
-        public ActionResult<Queue<StudentProgram>> Get()
+        public ActionResult<IEnumerable<StudentProgram>> Get()
         {
             return studentPrograms;
         }
@@ -69,19 +70,20 @@ namespace AplicationQueueAPI.Controllers
         [HttpPost("Select")]
         public ActionResult<StudentProgram> selectTopProgram()
         {
-            StudentProgram studentProgram = studentPrograms.First();
-            var strCmdText = $"trash.txt {studentProgram.Id} {studentProgram.TeamName} {studentProgram.Src}";
-            var process = Process.Start(@"C:\Users\Ian\source\repos\Async String\Async String\bin\Debug\netcoreapp3.1\Async String.exe", strCmdText);
-            process.WaitForExit();
-            return Delete(studentProgram.Id);
+            if(0 == Interlocked.CompareExchange(ref Locked, 1, 0))
+            {
+
+                StudentProgram studentProgram = studentPrograms.First();
+                var strCmdText = $"trash.txt {studentProgram.Id} {studentProgram.TeamName} {studentProgram.Src}";
+                var process = Process.Start(@"C:\Users\Ian\source\repos\Async String\Async String\bin\Debug\netcoreapp3.1\Async String.exe", strCmdText);
+                process.WaitForExit();
+
+                Locked = 0;
+                return Delete(studentProgram.Id);
+            }
+            HttpContext.Response.StatusCode = 423;
+            return null;
         }
-        //public static void CheckIfRunning
-        //{
-        //    get
-        //    {
-
-        //    }
-
-        //}
+        private static int Locked = 0;
     }
 }
