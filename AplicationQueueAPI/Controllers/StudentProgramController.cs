@@ -72,7 +72,11 @@ namespace AplicationQueueAPI.Controllers
         {
             if(0 == Interlocked.CompareExchange(ref Locked, 1, 0))
             {
-
+                if (studentPrograms.Count == 0)
+                {
+                    HttpContext.Response.StatusCode = 410;
+                    return null;
+                }
                 StudentProgram studentProgram = studentPrograms.First();
                 var strCmdText = $"trash.txt {studentProgram.Id} {studentProgram.TeamName} {studentProgram.Src}";
                 var process = Process.Start(@"C:\Users\Ian\source\repos\Async String\Async String\bin\Debug\netcoreapp3.1\Async String.exe", strCmdText);
