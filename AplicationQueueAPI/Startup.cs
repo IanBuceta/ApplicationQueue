@@ -44,7 +44,7 @@ namespace AplicationQueueAPI
 
             app.UseHttpsRedirection();
 
-
+            //
             app.UseRouting();
 
             app.UseAuthorization();
