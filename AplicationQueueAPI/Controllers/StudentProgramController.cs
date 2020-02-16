@@ -8,9 +8,11 @@ using ApplicationQueue;
 using ApplicationQueue.Models;
 using System.Diagnostics;
 using System.Threading;
+using Microsoft.AspNetCore.Cors;
 
 namespace AplicationQueueAPI.Controllers
-{
+{ 
+    [EnableCors("AllowOrigin")]
     [Route("api/[controller]")]
     [ApiController]
     public class StudentProgramController : ControllerBase
